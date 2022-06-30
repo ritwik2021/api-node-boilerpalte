@@ -9,6 +9,7 @@ import hpp from 'hpp';
 
 import { AppModule } from './app.module';
 import { configureSwagger } from './shared/swagger/swagger';
+import { telegramBot } from 'shared/helper/telegram.bot';
 // import { ipRateLimitMiddleware } from './shared/rate-limit/rate-limit';
 
 async function main() {
@@ -47,6 +48,7 @@ async function main() {
 
   await app.listen(port, () => {
     Logger.log(`${envApp} Server is running on ${port}`, `Application Server`);
+    telegramBot(`${envApp} Server is running`);
   });
 }
 main();
