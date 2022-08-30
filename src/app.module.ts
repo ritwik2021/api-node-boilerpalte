@@ -11,10 +11,11 @@ import { AppController } from './app.controller';
 import ormconfig from './shared/config/ormconfig';
 import { LoggerMiddleware } from './shared/logger/logger.middleware';
 import { loggerConfig } from './shared/logger/logger.config';
-import { UsersModule } from './modules/users/users.module';
+import { UsersModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { LoggingInterceptor } from './shared/core/logging-interceptor';
 import { MailModule } from './modules/mail/mail.module';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { MailModule } from './modules/mail/mail.module';
     ScheduleModule.forRoot(),
     UsersModule,
     AuthModule,
-    MailModule
+    MailModule,
+    HealthModule
   ],
   controllers: [AppController],
   providers: [
