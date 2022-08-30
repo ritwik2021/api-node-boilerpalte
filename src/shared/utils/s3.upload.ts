@@ -1,11 +1,9 @@
 import { S3 } from 'aws-sdk';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import 'dotenv/config';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class FileUpload {
-  constructor(private readonly configService: ConfigService) {}
   /**
    * @description it will genrate a preSinged url for s3 bucket
    * @param fileName
@@ -16,10 +14,6 @@ export class FileUpload {
    */
 
   async signedUrl(fileName, fileType, filePath): Promise<any> {
-    console.log({
-      region: process.env.AWS_S3_REGION,
-      Bucket: process.env.AWS_S3_BUCKET_NAME
-    });
     const s3 = new S3({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -34,7 +28,6 @@ export class FileUpload {
       ContentType: fileType
     };
 
-    const uploadUrl = await s3.getSignedUrlPromise('putObject', params);
-    return uploadUrl;
+    return s3.getSignedUrlPromise('putObject', params);
   }
 }
