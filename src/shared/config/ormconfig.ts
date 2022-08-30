@@ -1,28 +1,8 @@
-import { ConnectionOptions } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const dotenv = require('dotenv');
 dotenv.config();
-
-// const ormConfig: ConnectionOptions = {
-//   type: "postgres",
-//   host: "localhost",
-//   port: 5432,
-//   username: "postgres",
-//   password: "123456",
-//   database: "Ten-DEX-local",
-//   logging: false,
-//   synchronize: false,
-//   migrationsRun: false,
-//   entities: [__dirname + "/**/*.entity{.ts,.js}"],
-//   migrations: [__dirname + "/migrations/**/*{.ts,.js}"],
-//   cli: {
-//     // Location of migration should be inside src folder
-//     // to be compiled into dist/ folder.
-//     migrationsDir: "src/migrations",
-//   },
-// };
 
 const ormConfig: PostgresConnectionOptions = {
   type: 'postgres',
@@ -34,8 +14,8 @@ const ormConfig: PostgresConnectionOptions = {
   logging: false,
   synchronize: false,
   migrationsRun: false,
-  entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
+  entities: [__dirname + '/../../**/*.entity.{ts,js}'],
+  migrations: [__dirname + '/../../migrations/**/*{.ts,.js}'],
   cli: {
     // Location of migration should be inside src folder
     // to be compiled into dist/ folder.

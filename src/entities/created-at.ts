@@ -1,6 +1,6 @@
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-export abstract class createdModified {
+export abstract class CreatedModified {
   @CreateDateColumn()
   created_at: Date;
 

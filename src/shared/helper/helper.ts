@@ -138,7 +138,7 @@ export function calculatePriceChange(oldvalue, newValue) {
 }
 
 export function prePareEmptyGraphData(arrayData) {
-  const result = arrayData.map((unidate) => {
+  return arrayData.map((unidate) => {
     return {
       date: unidate,
       formatDate: this.fetchDateFormat(unidate),
@@ -146,11 +146,10 @@ export function prePareEmptyGraphData(arrayData) {
       final: '$0'
     };
   });
-  return result;
 }
 
 export function prePareEmptyGraphDataWithoutSymbol(arrayData) {
-  const result = arrayData.map((unidate) => {
+  return arrayData.map((unidate) => {
     return {
       date: unidate,
       formatDate: this.fetchDateFormat(unidate),
@@ -158,11 +157,10 @@ export function prePareEmptyGraphDataWithoutSymbol(arrayData) {
       final: '0'
     };
   });
-  return result;
 }
 
 export function prePareEmptyGraphMonthlyData(arrayData) {
-  const result = arrayData.map((unidate) => {
+  return arrayData.map((unidate) => {
     return {
       month: moment(unidate).format('MMM'),
       formatDate: moment(unidate).format('MMM DD, YYYY'),
@@ -170,7 +168,6 @@ export function prePareEmptyGraphMonthlyData(arrayData) {
       final: '$0'
     };
   });
-  return result;
 }
 
 export function fetchLastDayTimestamp() {
@@ -203,18 +200,17 @@ export function convertBnb(val: string) {
  */
 export function findUniqueDate(arrayData: any) {
   /** fetch the unique dates */
-  const uniqueDates = [
+  return [
     ...new Set(
       arrayData.map((pairObject) => {
         return moment(pairObject.created_at).format('YYYY-MM-DD');
       })
     )
   ];
-  return uniqueDates;
 }
 
 export function findUniqueDateFromTimeStamp(arrayData) {
-  const uniqueDates = [
+  return [
     ...new Set(
       arrayData.map((object) => {
         const timestamp = object.Volumn_timestamp;
@@ -222,5 +218,4 @@ export function findUniqueDateFromTimeStamp(arrayData) {
       })
     )
   ];
-  return uniqueDates;
 }
