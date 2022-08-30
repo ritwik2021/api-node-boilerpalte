@@ -1,8 +1,11 @@
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WinstonModule } from 'nest-winston';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+
 import config from './shared/config/config';
 import { AppController } from './app.controller';
 import ormconfig from './shared/config/ormconfig';
@@ -10,21 +13,41 @@ import { LoggerMiddleware } from './shared/logger/logger.middleware';
 import { loggerConfig } from './shared/logger/logger.config';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { UsersController } from './modules/users/users.controller';
+import { LoggingInterceptor } from './shared/core/logging-interceptor';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: config.get('THROTTLE_TTL'),
+        limit: config.get('THROTTLE_LIMIT')
+      })
+    }),
     TypeOrmModule.forRoot(ormconfig),
     WinstonModule.forRoot(loggerConfig),
     ScheduleModule.forRoot(),
     UsersModule,
-    AuthModule
+    AuthModule,
+    MailModule
   ],
-  controllers: [AppController]
+  controllers: [AppController],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    }
+  ]
 })
 export class AppModule implements NestModule {
   configure(middleware: MiddlewareConsumer) {
-    middleware.apply(LoggerMiddleware).forRoutes(UsersController);
+    middleware.apply(LoggerMiddleware).forRoutes('/');
   }
 }
