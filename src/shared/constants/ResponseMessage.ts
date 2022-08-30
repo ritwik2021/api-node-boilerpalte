@@ -48,5 +48,6 @@ export const ResponseMessage = {
   DATA_ALREADY_EXIST: 'Data already exists',
   UPDATE_NOT_ALLOWED: 'Update not allowed',
   DELETE_NOT_ALLOWED: 'Delete not allowed',
-  WALLET_NOT_CREATED: 'Wallet not created'
+  WALLET_NOT_CREATED: 'Wallet not created',
+  PRESIGNED_URL: 'Pre-Signed Url'
 };
