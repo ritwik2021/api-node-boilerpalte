@@ -12,28 +12,26 @@ import { MailService } from './mail.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        if (configService.get('NODE_ENV') === 'dev') {
-          return {
-            transport: {
-              host: configService.get('EMAIL_HOST'),
-              port: configService.get('EMAIL_PORT'),
-              auth: {
-                user: configService.get('EMAIL_USERNAME'),
-                pass: configService.get('EMAIL_PASSWORD')
-              }
-            },
-            defaults: {
-              from: "'no-reply' <info@your-org.io>"
-            },
-            template: {
-              dir: join(__dirname, '../../../assets', 'templates'),
-              adapter: new HandlebarsAdapter(), // NOTE: change to your preferable adapter
-              options: {
-                strict: true
-              }
+        return {
+          transport: {
+            host: configService.get('EMAIL_HOST'),
+            port: configService.get('EMAIL_PORT'),
+            auth: {
+              user: configService.get('EMAIL_USERNAME'),
+              pass: configService.get('EMAIL_PASSWORD')
             }
-          };
-        }
+          },
+          defaults: {
+            from: "'no-reply' <info@your-org.io>"
+          },
+          template: {
+            dir: join(__dirname, '../../../assets', 'templates'),
+            adapter: new HandlebarsAdapter(), // NOTE: change to your preferable adapter
+            options: {
+              strict: true
+            }
+          }
+        };
       }
     })
   ],
