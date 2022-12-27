@@ -1,48 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
 import moment from 'moment';
 
-export function getErrorResponse(message: string) {
-  return {
-    status: false,
-    statuscode: HttpStatus.INTERNAL_SERVER_ERROR,
-    message: message
-  };
-}
-
-export function getNoDataFound(message: string) {
-  return {
-    status: true,
-    statuscode: HttpStatus.NO_CONTENT,
-    message: message,
-    result: []
-  };
-}
-
-export function getSuccessResponse(message: string, result: any) {
-  return {
-    status: true,
-    statuscode: HttpStatus.OK,
-    message: message,
-    result: result
-  };
-}
-
-export function getUnauthorized(message: string) {
-  return {
-    status: false,
-    statuscode: HttpStatus.UNAUTHORIZED,
-    message: message
-  };
-}
-
-export function userNotExist(message: string) {
-  return {
-    status: true,
-    statuscode: HttpStatus.OK,
-    message: message
-  };
-}
-
 export function removeExponential(x) {
   if (Math.abs(x) < 1.0) {
     const e = parseInt(x.toString().split('e-')[1]);
