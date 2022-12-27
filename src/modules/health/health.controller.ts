@@ -2,14 +2,14 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HealthCheck, HealthCheckService, TypeOrmHealthIndicator } from '@nestjs/terminus';
 
+@ApiTags('Health Module')
 @Controller('health')
 export class HealthController {
   constructor(private health: HealthCheckService, private db: TypeOrmHealthIndicator) {}
 
-  @ApiTags('Health Module')
   @Get()
   @HealthCheck()
   async check() {
-    return this.health.check([async () => this.db.pingCheck('typeorm')]);
+    return this.health.check([async () => this.db.pingCheck('database')]);
   }
 }

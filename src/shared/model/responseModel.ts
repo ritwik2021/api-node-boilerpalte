@@ -1,4 +1,4 @@
-import { Injectable, Response } from '@nestjs/common';
+import { HttpException, Injectable, Response } from '@nestjs/common';
 
 @Injectable()
 export class ResponseModel {
@@ -8,5 +8,9 @@ export class ResponseModel {
       success,
       message
     });
+  }
+
+  error(message: any, status: number, success: boolean) {
+    throw new HttpException({ message, success }, status);
   }
 }

@@ -9,3 +9,5 @@ export const optConfig = {
   optDigits: '0123456789',
   otpExpiresTimes: 5 // 5 minutes
 };
+
+export const csrfExcludeRoutes = ['/api/v1/user/logout', '/api/v1/user', '/api/v1/admin/login'];

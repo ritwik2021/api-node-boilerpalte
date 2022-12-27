@@ -13,7 +13,8 @@ import { ValidationError } from 'class-validator';
 import { AppModule } from './app.module';
 import { configureSwagger } from './shared/swagger/swagger';
 import { telegramBot } from './shared/helper/telegram.bot';
-import { HttpExceptionFilter } from 'shared/core/httpexception.filter';
+import { HttpExceptionFilter } from './shared/core/httpexception.filter';
+import { csrfExcludeRoutes } from './shared/constants/constants';
 
 async function main() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,8 +23,8 @@ async function main() {
   const allowedDomains = await app.get(ConfigService).get('ALLOWED_DOMAINS');
   const whitelist = allowedDomains.split(',');
   app.setGlobalPrefix(await app.get(ConfigService).get('GLOBAL_PRIFIX'));
-
   app.use(cookieParser());
+
   app.enableCors({
     origin: function (origin, callback) {
       if (envApp != 'dev') {
@@ -78,21 +79,56 @@ async function main() {
     })
   ); //Security purpose to hide unwanted headers
   app.use(compression()); // Compression Settings
+  const ignoreMethods =
+    process.env.STAGE == 'dev'
+      ? ['GET', 'HEAD', 'OPTIONS', 'DELETE', 'POST', 'PATCH', 'PUT']
+      : ['GET', 'HEAD', 'OPTIONS', 'DELETE'];
+
+  const csrfProtection = csurf({
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      maxAge: 300
+      // sameSite: 'none',
+    },
+    ignoreMethods
+  });
+  app.use((req, res, next) => {
+    if (csrfExcludeRoutes.includes(req.path)) {
+      return next();
+    }
+    csrfProtection(req, res, next);
+  });
+
+  app.set('trust proxy', 1);
+
+  app.use(helmet.contentSecurityPolicy());
+  app.use(helmet.crossOriginEmbedderPolicy());
+  app.use(helmet.crossOriginOpenerPolicy());
+  app.use(helmet.crossOriginResourcePolicy());
+  app.use(helmet.dnsPrefetchControl());
+  app.use(helmet.expectCt());
+  app.use(helmet.frameguard());
+  app.use(helmet.hidePoweredBy());
+  app.use(helmet.ieNoOpen());
+  app.use(helmet.noSniff());
+  app.use(helmet.originAgentCluster());
   app.use(
-    csurf({
-      cookie: { httpOnly: true, secure: true },
-      ignoreMethods: ['GET', 'HEAD', 'OPTIONS', 'POST', 'PUT', 'DELETE', 'PATCH']
+    helmet.permittedCrossDomainPolicies({
+      permittedPolicies: 'by-content-type'
     })
   );
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.use(helmet.referrerPolicy());
+  app.use(helmet.xssFilter());
   app.use(xss()); // XSS Filter
   app.use(hpp()); // Prevent http Parameter pollution
-
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
         return new BadRequestException(validationErrors);
-      }
+      },
+      whitelist: true
     })
   );
 
