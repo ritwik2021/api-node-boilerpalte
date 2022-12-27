@@ -10,7 +10,7 @@ import { SignedUrlDto } from './dto/user.dto';
 export class UserService {
   constructor(private readonly responseModel: ResponseModel, private readonly fileUpload: FileUpload) {}
   /**
-   * @description it will genrate preSinged url for s3 bucket
+   * @description it will generate preSinged url for s3 bucket
    * @param signedUrlDto
    * @returns it will return preSigned url
    * @author Ritwik Rohitashwa
