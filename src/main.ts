@@ -12,8 +12,7 @@ import { ValidationError } from 'class-validator';
 
 import { AppModule } from './app.module';
 import { configureSwagger } from './shared/swagger/swagger';
-import { telegramBot } from './shared/helper/telegram.bot';
-import { HttpExceptionFilter } from './shared/core/httpexception.filter';
+import { HttpExceptionFilter } from './shared/core/httpException.filter';
 import { csrfExcludeRoutes } from './shared/constants/constants';
 
 async function main() {
@@ -22,7 +21,7 @@ async function main() {
   const port = await app.get(ConfigService).get('NODE_PORT');
   const allowedDomains = await app.get(ConfigService).get('ALLOWED_DOMAINS');
   const whitelist = allowedDomains.split(',');
-  app.setGlobalPrefix(await app.get(ConfigService).get('GLOBAL_PRIFIX'));
+  app.setGlobalPrefix(await app.get(ConfigService).get('GLOBAL_PREFIX'));
   app.use(cookieParser());
 
   app.enableCors({

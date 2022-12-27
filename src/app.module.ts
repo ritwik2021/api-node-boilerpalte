@@ -44,7 +44,7 @@ import { SentryInterceptor } from './shared/core/sentry-interceptor';
         tracesSampleRate: 0.2,
         environment: configService.get('NODE_ENV') || 'dev',
         release: `alpha@0.0.1`, // must create a release in sentry.io dashboard
-        logLevel: ['debug'] //based on sentry.io loglevel //
+        logLevel: ['debug'] //based on sentry.io log level //
       })
     }),
 

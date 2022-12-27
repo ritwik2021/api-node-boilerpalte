@@ -84,22 +84,22 @@ export function subtractWeek(num: number) {
   return moment().subtract(num, 'week').format('YYYY-MM-DD');
 }
 
-export function calculatePriceChange(oldvalue, newValue) {
-  const changeArrow = Number(newValue) >= Number(oldvalue) ? 'up' : 'down';
-  const decreaseValue = Number(oldvalue) - Number(newValue);
-  if (!oldvalue) {
+export function calculatePriceChange(oldValue, newValue) {
+  const changeArrow = Number(newValue) >= Number(oldValue) ? 'up' : 'down';
+  const decreaseValue = Number(oldValue) - Number(newValue);
+  if (!oldValue) {
     return { percentage: 100, arrow: changeArrow };
   } else {
-    const percentage = Math.abs((decreaseValue / Number(oldvalue)) * 100).toFixed(2);
+    const percentage = Math.abs((decreaseValue / Number(oldValue)) * 100).toFixed(2);
     return { percentage: percentage, arrow: changeArrow };
   }
 }
 
 export function prePareEmptyGraphData(arrayData) {
-  return arrayData.map((unidate) => {
+  return arrayData.map((uniDate) => {
     return {
-      date: unidate,
-      formatDate: this.fetchDateFormat(unidate),
+      date: uniDate,
+      formatDate: this.fetchDateFormat(uniDate),
       actual: 0,
       final: '$0'
     };
@@ -107,10 +107,10 @@ export function prePareEmptyGraphData(arrayData) {
 }
 
 export function prePareEmptyGraphDataWithoutSymbol(arrayData) {
-  return arrayData.map((unidate) => {
+  return arrayData.map((uniDate) => {
     return {
-      date: unidate,
-      formatDate: this.fetchDateFormat(unidate),
+      date: uniDate,
+      formatDate: this.fetchDateFormat(uniDate),
       actual: 0,
       final: '0'
     };
@@ -118,10 +118,10 @@ export function prePareEmptyGraphDataWithoutSymbol(arrayData) {
 }
 
 export function prePareEmptyGraphMonthlyData(arrayData) {
-  return arrayData.map((unidate) => {
+  return arrayData.map((uniDate) => {
     return {
-      month: moment(unidate).format('MMM'),
-      formatDate: moment(unidate).format('MMM DD, YYYY'),
+      month: moment(uniDate).format('MMM'),
+      formatDate: moment(uniDate).format('MMM DD, YYYY'),
       actual: 0,
       final: '$0'
     };
@@ -148,9 +148,6 @@ export function fetchMonthBeforeTimestamp(month) {
   return moment().subtract(month, 'month').unix();
 }
 
-export function convertBnb(val: string) {
-  return val && (val.toLowerCase() == 'wbnb' || val.toLowerCase() == 'wrapped bnb') ? 'BNB' : val;
-}
 /**
  *
  * @param arrayData: array of objects
@@ -171,7 +168,7 @@ export function findUniqueDateFromTimeStamp(arrayData) {
   return [
     ...new Set(
       arrayData.map((object) => {
-        const timestamp = object.Volumn_timestamp;
+        const timestamp = object.volumn_timestamp;
         return moment.unix(timestamp).format('YYYY-MM-DD');
       })
     )

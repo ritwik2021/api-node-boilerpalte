@@ -5,7 +5,7 @@ import 'dotenv/config';
 @Injectable()
 export class FileUpload {
   /**
-   * @description it will genrate a preSinged url for s3 bucket
+   * @description it will generate a preSinged url for s3 bucket
    * @param fileName
    * @param fileType
    * @param filePath
